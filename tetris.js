@@ -60,15 +60,25 @@ class Player {
 }
 
 class GameCanvas {
-  constructor() {
+  constructor(width, height) {
     this.canvas = document.getElementById("tetris");
     this.context = this.canvas.getContext("2d");
-    // this.context.scale(30, 30);
+    this.width = width;
+    this.height = height;
   }
 
   clearCanvas() {
     this.context.fillStyle = "#000";
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.strokeStyle = "grey";
+    this.context.lineWidth = 0.4;
+
+    for (let w = 0; w < this.width; w++) {
+      for (let h = 0; h < this.height; h++) {
+        this.context.fillRect(w * 30, h * 30, 30, 30);
+        this.context.strokeRect(w * 30, h * 30, 30, 30);
+      }
+    }
+    // this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   drawArena(arena) {
@@ -94,7 +104,8 @@ class GameCanvas {
     block.forEach((row, y) => {
       row.forEach((val, x) => {
         if (val !== 0) {
-          context.strokeStyle = "white";
+          context.strokeStyle = "darkgrey";
+          this.context.lineWidth = 1;
           context.strokeRect(30 * (x + pos.x), 30 * (y + pos.y), 30, 30);
         }
       });
@@ -107,15 +118,16 @@ class GameCanvas {
     block.forEach((row, y) => {
       row.forEach((val, x) => {
         if (val !== 0) {
-          context.fillStyle = "white";
-          context.fillRect(30 * (x + offset.x), 30 * (y + offset.y), 30, 30);
           context.fillStyle = "red";
           context.fillRect(
             30 * (x + offset.x) + 1,
             30 * (y + offset.y) + 1,
-            28,
-            28
+            30,
+            30
           );
+          context.strokeStyle = "white";
+          this.context.lineWidth = 1.2;
+          context.strokeRect(30 * (x + offset.x), 30 * (y + offset.y), 30, 30);
         }
       });
     });
@@ -125,13 +137,14 @@ class GameCanvas {
 class Game {
   constructor(width, height) {
     this.player = new Player();
-    this.canvas = new GameCanvas();
+    this.canvas = new GameCanvas(width, height);
     this.level = 1;
     this.lastTime = 0;
     this.dropCounter = 0;
     this.dropInterval = 1000;
     this.width = width;
     this.height = height;
+    this.score = 0;
     this.linesCleared = 0;
     this.createArena(width, height);
   }
@@ -164,12 +177,16 @@ class Game {
 
   clearLine(row) {
     this.arena[row] = new Array(this.arena[row].length).fill(0);
+    this.score += this.level;
     this.linesCleared++;
 
-    if (this.linesCleared > this.level * 5) {
+    if (this.linesCleared >= this.level * 5) {
       this.level++;
       this.dropInterval = 1000 * Math.pow(0.9, this.level);
     }
+
+    document.getElementById("score").innerHTML = `Score: ${this.score}`;
+    document.getElementById("level").innerHTML = `Level: ${this.level}`;
   }
 
   clearLines() {
@@ -312,6 +329,8 @@ class Game {
   }
 
   start() {
+    document.getElementById("score").innerHTML = `Score: ${this.score}`;
+    document.getElementById("level").innerHTML = `Level: ${this.level}`;
     this.initControls();
     this.update();
   }
