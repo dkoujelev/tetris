@@ -185,8 +185,7 @@ class Game {
       this.dropInterval = 1000 * Math.pow(0.9, this.level);
     }
 
-    document.getElementById("score").innerHTML = `Score: ${this.score}`;
-    document.getElementById("level").innerHTML = `Level: ${this.level}`;
+    this.updateUI();
   }
 
   clearLines() {
@@ -295,6 +294,9 @@ class Game {
     this.dropCounter = 0;
     this.dropInterval = 1000;
     this.level = 1;
+    this.linesCleared = 0;
+    this.score = 0;
+    this.updateUI();
   }
 
   rotateBlock() {
@@ -329,8 +331,7 @@ class Game {
   }
 
   start() {
-    document.getElementById("score").innerHTML = `Score: ${this.score}`;
-    document.getElementById("level").innerHTML = `Level: ${this.level}`;
+    this.updateUI();
     this.initControls();
     this.update();
   }
@@ -347,6 +348,11 @@ class Game {
     this.canvas.drawFrame(this.arena, this.player, this.ghostBlock());
     window.requestAnimationFrame(this.update);
   };
+
+  updateUI() {
+    document.getElementById("score").innerHTML = `Score: ${this.score}`;
+    document.getElementById("level").innerHTML = `Level: ${this.level}`;
+  }
 }
 
 const game = new Game(12, 20);
