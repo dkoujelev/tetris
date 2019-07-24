@@ -1,0 +1,19 @@
+{
+  "name": "tetris",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tetris.js",
+  "scripts": {
+    "deploy": "gh-pages -d src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkoujelev/tetris.git"
+  },
+  "author": "Dmitry Koujelev",
+  "license": "ISC",
+  "homepage": "https://dkoujelev.github.io/tetris",
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
+  }
+}
