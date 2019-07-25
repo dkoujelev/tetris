@@ -216,6 +216,10 @@ class Game {
 
     ghost.moveUp();
 
+    if (ghost.pos.y < this.player.pos.y) {
+      ghost.pos.y = this.player.pos.y;
+    }
+
     return ghost;
   }
 
