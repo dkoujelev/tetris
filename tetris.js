@@ -182,7 +182,15 @@ class Game {
 
     if (this.linesCleared >= this.level * 5) {
       this.level++;
-      this.dropInterval = 1000 * Math.pow(0.9, this.level);
+      if (this.level <= 5) {
+        this.dropInterval = 1000 * Math.pow(0.9, this.level);
+      } else if (this.level <= 10) {
+        this.dropInterval = 1000 * Math.pow(0.89, this.level);
+      } else if (this.level <= 15) {
+        this.dropInterval = 1000 * Math.pow(0.88, this.level);
+      } else {
+        this.dropInterval = 1000 * Math.pow(0.87, this.level);
+      }
     }
 
     this.updateUI();
@@ -215,6 +223,10 @@ class Game {
     }
 
     ghost.moveUp();
+
+    if (ghost.pos.y < this.player.pos.y) {
+      ghost.pos.y = this.player.pos.y;
+    }
 
     return ghost;
   }
